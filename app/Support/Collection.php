@@ -1,5 +1,18 @@
 <?php
 
+namespace App\Support;
+
+class Collection
+{
+    protected $items = [];
+    public function get()
+    {
+
+    }
+}
+
+//UserTest.php:
+
 class UserTest extends \PHPUnit\Framework\TestCase
 {
     protected $user;
