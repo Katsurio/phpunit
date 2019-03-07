@@ -2,8 +2,11 @@
 
 class UserTest extends \PHPUnit\Framework\TestCase
 {
-    public function testThatWeCanGetTheFirstName()
+    /** @test */ // functions will run w/o test-prepend if you add @test
+//    public function testThatWeCanGetTheFirstName()
+    public function that_we_can_get_the_first_name()
     {
+        // die("snoochies");
         $user = new \App\Models\User;
 
         $user->setFirstName('Billy');
