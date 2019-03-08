@@ -3,10 +3,11 @@
 namespace App\Support;
 
 use IteratorAggregate;
+use JsonSerializable;
 
 //use ArrayIterator;
 
-class Collection implements IteratorAggregate
+class Collection implements IteratorAggregate, JsonSerializable
 {
     protected $items = [];
 
@@ -38,5 +39,15 @@ class Collection implements IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->items);
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->get());
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->items;
     }
 }

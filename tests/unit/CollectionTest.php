@@ -79,4 +79,34 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(3, $collection->count());
         $this->assertCount(3, $collection->get());
     }
+
+    /** @test */
+    public function returns_json_encoded_items()
+    {
+        $collection = new \App\Support\Collection([
+            ['username' => 'Bilbo'],
+            ['username' => 'Derp']
+        ]);
+
+        $this->assertIsString($collection->toJson());
+        $this->assertEquals('[{"username":"Bilbo"},{"username":"Derp"}]', $collection->toJson());
+    }
+
+    /** @test */
+    public function json_encoding_a_collection_object_returns_json()
+    {
+        $collection = new \App\Support\Collection([
+            ['username' => 'Bilbo'],
+            ['username' => 'Derp']
+        ]);
+
+        // This is my solution in 1 line
+        $this->assertJson($collection->toJson());
+
+        // Not mine
+        $encoded = json_encode($collection);
+
+        $this->assertIsString($encoded);
+        $this->assertEquals('[{"username":"Bilbo"},{"username":"Derp"}]', $encoded);
+    }
 }
