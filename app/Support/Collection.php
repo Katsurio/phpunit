@@ -2,90 +2,41 @@
 
 namespace App\Support;
 
-class Collection
+use IteratorAggregate;
+
+//use ArrayIterator;
+
+class Collection implements IteratorAggregate
 {
     protected $items = [];
+
+    public function __construct(array $items = [])
+    {
+        $this->items = $items;
+    }
+
     public function get()
     {
-
-    }
-}
-
-//UserTest.php:
-
-class UserTest extends \PHPUnit\Framework\TestCase
-{
-    protected $user;
-
-    public function setUp()
-    {
-        $this->user = new App\Models\User;
+        return $this->items;
     }
 
-    /** @test */ // functions will run w/o test-prepend if you add @test
-//    public function testThatWeCanGetTheFirstName()
-    public function that_we_can_get_the_first_name()
+    public function count()
     {
-        $this->user->setFirstName('Billy');
-
-        $this->assertEquals($this->user->getFirstName(), "Billy");
+        return count($this->items);
     }
 
-    public function testThatWeCanGetTheLastName()
+    public function add(array $items)
     {
-        $this->user->setLastName('Joel');
-
-        $this->assertEquals($this->user->getLastName(), "Joel");
+        $this->items = array_merge($this->items, $items);
     }
 
-    public function testThatWeCanGetTheFullName()
+    public function merge(Collection $collection)
     {
-        $user = new \App\Models\User;
-
-        $user->setFirstName('Billy');
-
-        $user->setLastName('Joel');
-
-        $this->assertEquals($user->getFullName(), "Billy Joel");
+        return $this->add($collection->get());
     }
 
-    public function testFirstAndLastNameAreTrimmed()
+    public function getIterator()
     {
-        $user = new \App\Models\User;
-
-        $user->setFirstName('  Billy     ');
-
-        $user->setLastName('         Joel');
-
-        $this->assertEquals($user->getFirstName(), "Billy");
-        $this->assertEquals($user->getLastName(), "Joel");
-    }
-
-    public function testEmailCanBeSet()
-    {
-        $user = new \App\Models\User;
-        $user->setEmail('billy@codephish.com');
-
-        $this->assertEquals($user->getEmail(), 'billy@codephish.com');
-    }
-
-    public function testEmailVariablesContainCorrectValues()
-    {
-        $user = new \App\Models\User;
-
-        $user->setFirstName('Billy');
-
-        $user->setLastName('Joel');
-
-        $user->setEmail('billy@codephish.com');
-
-        $emailVariables = $user->getEmailVariables();
-
-        $this->assertArrayHasKey('full_name', $emailVariables);
-        $this->assertArrayHasKey('email', $emailVariables);
-
-        $this->assertEquals($emailVariables['full_name'], 'Billy Joel');
-        $this->assertEquals($emailVariables['email'], 'billy@codephish.com');
-
+        return new \ArrayIterator($this->items);
     }
 }
